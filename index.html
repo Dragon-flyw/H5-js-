@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge chrome=1">
+  <title>Document</title>
+  <style>
+  /* 头部 */
+      * {
+	   margin: 0;
+	   padding: 0;
+	  }
+	  html {
+	    width: 100%;
+		height: 100%;
+	  }
+	  body {
+	    width: 100%;
+		height: 100%;
+	  }
+     .outward {
+	   background: url(./img/bg1.jpg) no-repeat;
+	   width: 100%;
+	   height: 100%;
+	 }
+	 .outward > .head {
+	   width: 100%;
+	   position: relative;
+	 }
+	  p {
+	   font-size: 1.1rem;
+	   color: #fff;
+	   padding: 0 0 1% 8%;
+	  }
+	  p.song-name {
+	   padding-top: 10%;
+	  }
+	  .txtc {
+	   text-align: center;
+	  }
+	  .outward .head img.more {
+	   transform: rotate(90deg);
+	   width: 8%;
+	   position: absolute;
+	   left: 88%;
+	   top: 40%;
+	  }
+	  /* 碟片 */
+	  .outward .top {
+	   padding: 20% 0;
+	   position: relative;
+	   width: 100%;
+	  }
+      .outward .top > .disc {
+	    width: 60%;
+		position: relative;
+		left: 20%;
+	  }
+	  .outward .top > .pin {
+	    position: absolute;
+		width: 18%;
+		left: 47%;
+		top: 0%;
+		z-index: 10;
+	  }  
+	  .rotate {
+	    transform-origin: 0 0;
+		transform: rotate(-28deg);
+	  }
+	  /* 歌词显示部分 */
+	  .outward #ge_ci {
+	     position: absolute;
+	     background-color: transparent;
+	     width: 100%;
+	     height: 50%;
+	     bottom: 38%;
+	     overflow-Y: auto;
+		 overflow-X: hidden;
+	     transition: all 1s linear;
+	  }
+	  #ge_ci ul.show-song {
+	     list-style: none;
+		 width: 100%;
+		 text-align: center;
+	     color: #ddd;
+	     font-size: 0.8rem;
+         line-height: 2.2rem;
+	     /* box-sizing: border-box; */
+		 position: absolute;
+		 top: 50%;
+		 transition: all .3s linear;
+	  }
+	  #ge_ci .show-song .active {
+	     color: red;
+		 transform: scale(1.25);
+	  }
+      #ge_ci .btn {
+	   position: absolute; 
+	   bottom: 0%;
+	   width: 2rem;
+	   height: 2rem;
+	   border-radius: 1rem;
+	   text-align: center;
+	   line-height: 2rem;
+	   color: pink;
+	   background-color: #455a64;
+	   cursor: pointer;
+	  }
+      #ge_ci .add {
+	   left: 5%;
+	  }
+	  #ge_ci .minus {
+	   right: 5%;
+	  }
+	  .hidden { 
+	    display: none;
+	  }
+	  /* 动画关键帧 */
+	  @keyframes rotates {
+	    0% {
+		  transform: rotate(0deg);
+		}
+		100% {
+		  transform: rotate(360deg);
+		}
+	  }
+	  @-webkit-keyframes rotates {
+	    0% {
+		  transform: rotate(0deg);
+		}
+		100% {
+		  transform: rotate(360deg);
+		}
+	  }
+	  @-moz-keyframes rotates {
+	    0% {
+		  transform: rotate(0deg);
+		}
+		100% {
+		  transform: rotate(360deg);
+		}
+	  }
+	  @-ms-keyframes rotates {
+	    0% {
+		  transform: rotate(0deg);
+		}
+		100% {
+		  transform: rotate(360deg);
+		}
+	  }
+	  @-o-keyframes rotates {
+	    0% {
+		  transform: rotate(0deg);
+		}
+		100% {
+		  transform: rotate(360deg);
+		}
+	  }
+	  .move {
+	   animation: rotates 5s linear infinite;
+	   animation-fill-mode: forwards;
+	  }
+	  /* 进度条 */
+	  .outward .progress {
+	    /* margin-top: 100%; */ 
+		width: 100%;
+	  }
+	  .outward .progress .progress-bar {
+		position: relative;
+		width: 60%;
+		left: 0;
+		height: 6px;
+		border-radius: 3px;
+		background-color: #eee;
+	  }
+	  .outward .progress .progress-bar .now {
+	    position: absolute;
+		height: 6px;
+		width: 0%;
+		border-radius: 3px;
+		background-color: #31c27c;
+	  }
+      .outward .progress .progress-bar .now::after {
+		position: absolute;
+		content: "";
+		left: 98%;
+		top: -4px;
+		height: 14px;
+		width: 14px;
+		border-radius: 7px;
+		background-color: #fff;
+	  }
+	  .start,.end {
+	    color: #fff;
+	  }
+	  /* 功能键 播放*/
+	  .outward > .control {
+		margin-top: 6%;
+		padding: 0 5%;
+	  }
+      .outward > .control img {
+	    width: 10%;
+	  }
+	  .outward > .control .play {
+	    width: 15%;
+	  }
+	  /* 功能键分享下载 */
+      .bottom {
+		margin-top: 8%;
+		padding: 0 5% 10%;
+	  }
+	  .bottom img {
+	    width: 8%;
+	  }
+	  .bottom img:nth-child(2) {
+	    transform: rotate(-90deg);
+	  }
+	  /* 通用属性 */
+	  .common {
+	    display: flex;
+		justify-content: space-around;
+		align-items: center;
+	  } 
+	 /*  隐藏区域 */
+	 .outward > .frag-child {
+	   position: absolute;
+	   background-color: rgba(0,0,0,.2);
+	   width: 100%;
+	   height: 0;
+	   bottom: 0%;
+	   overflow: auto;
+	   transition: all 1s linear;
+	   -moz-transition: all 1s linear; /* Firefox 4 */
+       -webkit-transition: all 1s linear; /* Safari 和 Chrome */
+       -o-transition: all 1s linear; /* Opera */
+	 }
+	 .outward > .frag-child > .list {
+	   list-style: none;
+	   color: #fff;
+	   padding: 0 10%;
+	   font-size: 0.8rem;
+	   box-sizing: border-box;
+	  /* pointer-events:none; */
+	 }
+	 .outward > .frag-child > .list li{
+	   display: flex;
+	   justify-content: space-between;
+	   align-items: center;
+	   padding-top:  2%; 
+	 }
+	 .outward > .frag-child > .list::after {
+	   content: "关闭";
+	   font-size: 1rem;
+	   color: #fff;
+       position: absolute;
+	   left: 48%;
+	   bottom: 8%;
+	   /* pointer-events：auto; */
+	 }
+	 .outward > .frag-child > .list img {
+	   width: 6%;
+	 }
+	 .bgc {
+	   background-color: #fff;
+	 }
+  </style>
+ </head>
+ <body>
+    <div class="outward">
+	   <div class="head">
+	     <p class="song-name">曲目: 神话</p>
+		 <p>歌手: Hu ge</p>
+	     <img class="more" src="./img/gengduo.png"
+		 alt="">
+	   </div>
+	   <!-- 碟片 -->
+	   <div>
+		   <div class="top">
+			  <img class="pin rotate"  src="./img/pin.png" alt="">
+			  <img class="disc" src="./img/disc1.png" alt="">
+		   </div>
+		   <div id="ge_ci" class="hidden">
+			  <ul class="show-song">
+			  
+			  </ul>
+			  <div>
+			    <div class="btn add">+1</div>
+			    <div class="btn minus">-1</div>
+			  </div>
+		   </div>
+	   </div>
+	   <!-- 进度条 -->
+	   <div class="progress common">
+	     <span class="start"></span>
+		 <div class="progress-bar">
+		    <div class="now"></div>
+		 </div>
+		 <span class="end"></span>
+	   </div>
+	  <!--  控制按键 -->
+	   <div class="control common">
+	      <img class="loop" data-target="loop" src="./img/xunhuan.png" alt="">
+	      <img class="prev" data-target="prev" src="./img/prev.png" alt="">
+	      <img class="play" data-target="play" src="./img/play.png" alt="">
+	      <img class="next" data-target="next" src="./img/next.png" alt=""> 
+		  <img src="./img/liebiao.png" data-target="liebiao" alt="">
+	   </div>
+	   <div class="bottom common">
+	       <img src="./img/love.png" alt="">
+	       <img src="./img/back.png" alt="">
+	       <img src="./img/fenxiang.png" alt="">
+	       <img src="./img/pinglun.png" alt="">
+	   </div>
+	   <div class="frag-child">
+		  <ul class="list">
+			  
+		  </ul>
+	   </div>
+	   <audio id="audio" src="./audio/1.mp3">
+	     你的浏览器版本太低，请升级！！！
+	   </audio>
+	</div>
+	<textarea id="lrc_content" name="textfield" cols="70" rows="10" style="display:none;">
+（[ti:告白气球1]
+[ar:周杰伦]
+[al:周杰伦的床边故事]
+[by:Love]
+[00:00.00]告白气球
+[00:04.55]词：方文山 曲：周杰伦
+[00:09.23]演唱：周杰伦
+[00:13.67]小灰灰歌词 xiaohuihui.net.cn
+[00:22.92]塞纳河畔 左岸的咖啡
+[00:26.04]我手一杯 品尝你的美
+[00:28.95]留下唇印的嘴
+[00:31.98]
+[00:33.67]花店玫瑰 名字写错谁
+[00:36.76]告白气球 风吹到对街
+[00:39.61]微笑在天上飞
+[00:42.67]
+[00:43.07]你说你有点难追 想让我知难而退
+[00:48.98]礼物不需挑最贵 只要香榭的落叶
+[00:54.38]营造浪漫的约会 不害怕搞砸一切
+[00:59.69]拥有你就拥有 全世界
+[01:04.26]
+[01:04.54]亲爱的 爱上你 从那天起
+[01:10.98]甜蜜的很轻易
+[01:14.96]亲爱的 别任性 你的眼睛
+[01:21.76]在说我愿意
+[01:25.68]
+[01:30.54]LRC编辑：小灰灰 QQ:762229008
+[01:44.12]
+[01:48.18]塞纳河畔 左岸的咖啡
+[01:51.36]我手一杯 品尝你的美
+[01:54.31]留下唇印的嘴
+[01:57.44]
+[01:59.09]花店玫瑰 名字写错谁
+[02:01.71]告白气球 风吹到对街
+[02:04.78]微笑在天上飞
+[02:07.97]
+[02:08.31]你说你有点难追 想让我知难而退
+[02:14.33]礼物不需挑最贵 只要香榭的落叶
+[02:19.62]营造浪漫的约会 不害怕搞砸一切
+[02:25.01]拥有你就拥有 全世界
+[02:29.60]
+[02:29.90]亲爱的 爱上你 从那天起
+[02:36.48]甜蜜的很轻易
+[02:40.44]亲爱的 别任性 你的眼睛
+[02:47.09]在说我愿意
+[02:50.80]
+[02:51.29]亲爱的 爱上你 恋爱日记
+[02:57.70]飘香水的回忆
+[03:01.53]一整瓶 的梦境 全都有你
+[03:08.39]搅拌在一起
+[03:12.34]亲爱的别任性 你的眼睛
+[03:20.33]在说我愿意
+[03:27.47]
+</textarea>
+    <script>
+	   var timer = null
+	   var a = ""
+	   var n = 1
+	   var time_ad = 0
+	   var outward = document.querySelector(".outward")
+	   var song_name = document.querySelector(".outward>.head>.song-name")
+	   var singer = document.querySelector(".outward>.head>p.song-name+p")
+	   var botn = document.querySelector(".outward .top").parentNode
+	   var disc = document.querySelector(".outward .top>.disc")
+	   var geciId = document.getElementById("ge_ci")
+	   var showSong = geciId.children[0]
+	   var start = document.querySelector(".outward>.progress>.start")
+	   var progressBar = document.querySelector(".outward>.progress>.progress-bar")
+	   var now = document.querySelector(".outward>.progress>.progress-bar>.now")
+	   var end = document.querySelector(".outward>.progress>.end")
+       var loop = document.querySelector(".outward>.control>.loop")
+	   //var prev = document.querySelector(".outward>.control>.prev")
+	   var play = document.querySelector(".outward>.control>.play")
+	   //var next = document.querySelector(".outward>.control>.next")
+	   //var liebiao = document.querySelector(".outward>.control>img.next+img")
+	   var fragChild = document.querySelector(".outward>.frag-child>.list")
+	   var controlAll = document.querySelector(".outward>.control")
+	   var bottomAll =document.querySelector(".outward>.bottom")
+	   var audio = document.getElementById("audio")
+	   var lrc_content = document.getElementById("lrc_content").value
+	   var arr = [
+	     {num: 1,adjust: 0,name:"神话",singer:"胡歌",file:"[00:00.00]无歌词"},
+		 {num: 2,adjust: 0,name:"忐忑",singer:"萨顶顶",file:"[00:00.00]无歌词"},
+		 {num: 3,adjust: 0,name:"青藏高原",singer:"韩红",num: 3,file:"[00:00.00]无歌词"},
+		 {num: 4,adjust: 0,name:"王妃",singer:"王源",file:"[00:00.00]《王妃》[00:01.00]原唱：萧敬腾 [00:02.56]演唱：王源 [00:03.56]摇晃的红酒杯 嘴唇像染着鲜血 [00:07.48]那不寻常的美 难赦免的罪 [00:11.46]谁忠心的跟随 充其量当个侍卫 [00:15.24]脚下踩着玫瑰 回敬一个吻当安慰 可怜 [00:26.09]像蠢动的音乐 教人们怎么成眠 [00:30.36]不知名的香水 窒息的鬼魅 [00:34.10]锋利的高跟鞋 让多少心肠破碎 [00:37.93]弯刀一般的眉 捍卫你的秘密花园 [00:42.76]夜太美 尽管再危险 [00:46.77]总有人黑着眼眶熬着夜 [00:50.70]爱太美 尽管再危险 [00:54.21]愿赔上了一切超支千年的泪[00:58.26]痛太美 尽管再卑微 [01:01.83]也想尝粉身碎骨的滋味 [01:05.82]你太美 尽管再无言 [01:09.65]我都想用石堆隔绝世界 [01:12.34]我的王妃 我要霸占你的美 [01:22.45]那催情的音乐 听起来多么愚昧 [01:27.02]你武装的防备 伤你的是谁 [01:30.85]靠近我一点点 是不一样的世界 [01:34.69]安睡在我的肩 我用生命为你加冕 [01:39.64]夜太美 尽管再危险 [01:43.49]总有人黑着眼眶熬着夜 [01:47.41]爱太美 尽管再危险 [01:51.10]愿赔上了一切超支千年的泪 [01:54.90]痛太美 尽管再卑微 [01:58.53]也想尝粉身碎骨的滋味 [02:02.49]你太美 尽管再无言 [02:06.09]我都想用石堆隔绝世界 [02:09.05]我的王妃 我要霸占你的美 [02:26.75]夜太美 尽管再危险 [02:30.75]总有人黑着眼眶熬着夜[02:34.80]爱太美 尽管再危险 [02:38.35]愿赔上了一切超支千年的泪 [02:42.25]痛太美 尽管再卑微 [02:45.81]也想尝粉身碎骨的滋味 [02:50.01]你太美 尽管再无言 [02:53.54]我都想用石堆隔绝世界 [02:56.35]我的王妃 我要霸占你的美"},
+		 {num: 5,adjust: 0,name:"桥边姑娘",singer:"流氓",file:"[00:00.00]无歌词"},
+		 {num: 6,adjust: 0,name:"告白气球",singer:"周杰伦",'file':lrc_content},
+	   ]
+	   //歌词处理区
+		 a=arr[n-1].file
+		 function parse(lrc){
+		   time_ad = parseInt(arr[n-1].adjust)
+           showSong.innerHTML=''
+		   var str=lrc.split("[")
+		   for(var i=0;i<str.length;i++){
+			  var shijian=str[i].split("]")[0]
+			  var geci = str[i].split("]")[1]
+			  var fen = shijian.split(":")[0]
+			  var miao = shijian.split(":")[1]
+			  var second = parseInt(fen)*60 + parseInt(miao)
+			   if(geci){
+			     showSong.innerHTML +="<li id='lrc_"+second+"'>"+geci+"</li>"
+			   }
+			}
+		 }
+		 parse(a)	
+		//唱片与歌词的切换
+		botn.onclick=function(e){
+		  if(e.target.nodeName === 'DIV' &&  e.target.innerHTML === "+1"){
+		        time_ad = parseInt(arr[n-1].adjust)
+			    time_ad = time_ad + 1
+				arr[n-1].adjust = time_ad
+		  }else if(e.target.nodeName === 'DIV' &&  e.target.innerHTML === "-1"){
+                time_ad = parseInt(arr[n-1].adjust)
+			    time_ad = time_ad - 1
+				arr[n-1].adjust = time_ad
+		  }else{
+			  if(geciId.className === "hidden"){
+				disc.parentNode.classList.add("hidden")
+				geciId.className = ""
+				progressBar.parentNode.style.marginTop = "108.2%"
+				singer.style.display = "none"
+				singer.nextElementSibling.style.display = "none"
+				song_name.classList.add('txtc')
+				song_name.innerHTML = arr[n-1].name
+				song_name.style.paddingLeft = "1%"
+			  }else{
+				  geciId.className = "hidden"
+				  disc.parentNode.className = "top"
+				  progressBar.parentNode.style.marginTop = 0
+				  singer.style.display = ""
+				  singer.nextElementSibling.style.display = ""
+				  song_name.className = 'song-name'
+				  song_name.innerHTML ="歌曲:" + arr[n-1].name
+				  singer.innerHTML ="歌手:" + arr[n-1].singer
+				  song_name.style.paddingLeft = "8%"
+			  }
+		  }
+		}
+	   //功能键区
+	   controlAll.onclick=function(e){
+	     if(e.target.nodeName==="IMG"){
+		    var btn = e.target
+			if(btn.getAttribute("data-target") === "prev"){
+			   n = parseInt(audio.src.slice(-5,-4))
+		      if(n > 1){
+			    n--
+				common(n)
+			    stop.call(this)
+				now.style.width = 0;
+				bofang()
+			  }	 
+		    }else if(btn.getAttribute("data-target") === "play"){
+		      if(audio.paused){
+				bofang()
+			  }else{
+				stop.call(this)
+			  }
+		    }else if(btn.getAttribute("data-target") === "next"){
+			   n = parseInt(audio.src.slice(-5,-4))
+		      if(n < arr.length ){
+			    n++
+				common(n)
+				stop.call(this)
+				now.style.width = 0;
+				bofang()
+			  }	 
+			}else if(btn.getAttribute("data-target") === "loop"){
+			  if(btn.loop){
+			    btn.loop = false
+                btn.className = "loop"
+			  }else{
+			    btn.loop = true
+                btn.classList.add("bgc")
+			  }
+			}else{
+			  fragChild.parentNode.style.height = "50%"
+			  var html = ""
+			  for(var elem of arr){
+			    html+=`<li data-target=${elem.num}><span>${elem.name}</span><img src='./img/love.png'/></li>`
+			  }
+			  fragChild.innerHTML = html
+			}
+		  }
+	   }
+	   function bofang(){
+	     n = parseInt(audio.src.slice(-5,-4))
+		 a = arr[n-1].file
+	     audio.play()
+		 parse(a)
+		 disc.classList.add("move")
+         disc.previousElementSibling.className ="pin"
+		 play.src = "./img/pause.png"
+		 timer = setInterval(()=>{
+			start.innerHTML = time(audio.currentTime)
+			now.style.width = audio.currentTime / audio.duration.toFixed(3) * 100 +"%"
+			treatSong()
+		 },100)
+	   }
+	   function stop(){
+	      audio.pause()
+		  this.children[2].src = "./img/play.png"
+          disc.className = "disc"
+		  disc.previousElementSibling.classList.add("rotate")
+          clearInterval(timer)
+	   }
+	   //歌词显示处理
+	   function treatSong(){
+	     var id_num = parseInt(audio.currentTime) + time_ad
+		    var lyric_li = showSong.getElementsByTagName("li")
+		    for(var i=0;i<lyric_li.length;i++){
+		       lyric_li[i].index = i
+		    }
+		    if(document.getElementById("lrc_"+id_num)){
+		       var obj = document.getElementById("lrc_"+id_num)
+			   for(var i=0;i<obj.index;i++){
+                    lyric_li[i].className="";
+               }
+               for(var j=obj.index;j<lyric_li.length;j++){
+                    lyric_li[j].className="";
+               }
+			  obj.className = 'active'
+			  showSong.style.top = geciId.offsetHeight/2 - obj.offsetTop +"px"
+			}
+	   }
+	   function common(n){
+	      audio.src = "./audio/"+n+".mp3"
+          disc.src = `./img/disc${n}.png`
+		  outward.style.background = `url(./img/bg${n}.jpg) no-repeat` 
+		  song_name.innerHTML = arr[n-1].name
+		  singer.innerHTML = arr[n-1].singer
+	   }
+	   //列表功能区
+       fragChild.onclick=function(e){
+	      if(e.target.nodeName === "SPAN"){
+			 n = e.target.parentNode.getAttribute("data-target")
+			console.log(1)
+			common(n)
+			console.log(2)
+			clearInterval(timer)
+			console.log(3)
+			bofang()
+			console.log(4)
+		  }else if(e.target.nodeName === "IMG"){
+		    alert("页面开发中")
+		  }else {
+			fragChild.parentNode.style.height = 0
+		  }
+	   }
+	   //进度条
+	   function time(value){
+	     var minute = Math.floor(value / 60)
+		     minute = minute.toString().length === 1 ? ("0" + minute) : minute
+		 var second = Math.round(value % 60)
+		     second = second.toString().length === 1 ? ("0"+ second) : second
+		 return `${minute}:${second}`
+	   }
+	   audio.onloadedmetadata=function(){
+	     start.innerHTML = time(audio.currentTime)
+		 end.innerHTML = time(audio.duration)
+	   }
+	   progressBar.onclick=function(e){
+	     var p = e.offsetX / this.offsetWidth
+		     audio.currentTime = p * audio.duration
+			 now.style.width = p * 100 + "%"
+		     bofang()
+	   }
+	   audio.onpause=function(){
+	    play.src = "./img/play.png"
+		if(audio.ended){
+		  clearInterval(timer)
+		  now.style.width = 0
+		  disc.className = "disc"
+		  disc.previousElementSibling.classList.add("rotate")
+		  audio.load()
+		  if(loop.loop){
+		    bofang()
+		  }
+		}
+	   }
+	   //功能键区 底部
+	   bottomAll.onclick=function(e){
+         if(e.target.nodeName==="IMG"){
+		     alert("页面开发中")
+		  }
+	   }
+	</script>
+ </body>
+</html>
